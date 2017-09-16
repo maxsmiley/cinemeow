@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+	<meta charset="utf-8" />
+	<title>Test for UI</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="map.css" />
+    <style>
+	.draggable { width: 90px; height: 80px; padding: 5px; float: left; margin: 0 10px 10px 0; font-size: .9em; }
+	.ui-widget-header p, .ui-widget-content p { margin: 0; }
+	</style>
+    <script>
+	$(function() {
+		var draggables = 8;
+		for(var i = 0; i < draggables; i ++){
+			$( "#draggable"+i ).draggable({grid: [ 10, 0 ],  
+				start: function() { $(this).appendTo('body'); }, });
+		}
+		/*$( "#draggable2" ).draggable({ snap: ".ui-widget-header" });
+		$( "#draggable3" ).draggable({ snap: ".ui-widget-header", snapMode: "outer" });
+		$( "#draggable4" ).draggable({ grid: [ 20,20 ] });
+		$( "#draggable5" ).draggable({ grid: [ 80, 80 ] });*/
+	});
+	</script>
+  </head>
+  <body onload="init()">
+		<div id="draggable0" class="draggable ui-widget-content">
+			<p>Video Clip 0</p>
+		</div>
+		<div id="draggable1" class="draggable ui-widget-content">
+			<p>Video Clip 1</p>
+		</div>
+		<div id="draggable2" class="draggable ui-widget-content">
+			<p>Video Clip 2 </p>
+		</div>
+		<div id="draggable3" class="draggable ui-widget-content">
+			<p>Video Clip 3</p>
+		</div>
+
+	</body>
+</html>

@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script>
+ 
+ 
+<!-- CSS -->
+<style type="text/css">
+html {
+    font-family: Helvetica;
+}
+
+.drag {
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    line-height: 70px;
+    border: 1px solid black;
+    cursor: pointer;
+    border-radius: 10px;
+    float: left;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 12px;
+    opacity: .7;
+}
+ 
+#drag-x {
+    width: 500px;
+    height: 75px;
+    border: 1px solid gray;
+    background-color: #E0F0FF;
+    padding-right: 10px;
+}
+
+</style>
+ 
+ 
+<!-- Javascript -->
+<script>
+$(function () {
+
+        /* basic */
+        $.ajax({
+            type: "GET",
+            url: "http://cinemeow.herokuapp.com/project?id=528a6b61e8f3c650ef000001",
+            success: function(data) {
+                project = data;
+                $('#title').text(project.name);
+                $('#created_at').text("Created on "+project.created_at);   
+                for (var i in project.clips) {
+                    var clip=project.clips[i];
+                    var color="#"+Math.floor((Math.random()*7216)+15770000).toString(16);
+                    $("#drag-x").append('<div id="drag'+i+'" class="drag clip" style="background-color:'+color+'">'+clip.name+'</div>');
+                }
+
+                $("#dragbasic div[id^='drag']").draggable({
+                    containment: "#dragbasic",
+                    stack: ".drag"
+                });
+ 
+                /* X axis only */
+                $("#drag-x div[id^='drag']").draggable({
+                        containment: "#drag-x",
+                        stack: ".drag",
+                        axis: "x",
+                        grid: [1,1],  
+                        snap: true,
+                        snapTolerance: 5  
+                });
+         
+                /* make draggable div always on top */
+                $("div[id^='drag']").mousedown(function () {
+                        $("div[id^='drag']").each(function () {
+                                var seq = $(this).attr("id").replace("drag", "");
+                                $(this).css('z-index', seq);
+                        });
+                });
+                $(".clip").resizable({
+                    handles: 'e, w', 
+                    minWidth: 15, //maxwidth will be determined by video clip!
+                    minHeight: 70,
+                    containment: "#drag-x"
+                }); 
+                $(".clip").resize(function(e){
+                    var position = $(this).offset();
+                    var start = position.left - 44;
+                    var width = $(this).width();
+                    //e.stopPropagation();
+                    //$(this).text("");
+                    $(info).text("start:" + start + " end: " + (start+width) + " length: "+ width);
+                } );
+                $(".clip").bind("drag", function(e){
+                    var position = $(this).offset();
+                    var start = position.left - 44;
+                    var width = $(this).width();
+                    //e.stopPropagation();
+                    //$(this).text("");
+                    $(info).text("start:" + start + " end: " + (start+width) + " length: "+ width);
+                } );
+                $(".clip").mouseover(function () {
+                    //$(this).css('opacity', '1');
+                });
+                $(".clip").mouseout(function () {
+                    $(this).css('opacity', '.7');
+                });
+            },
+            error: function(XMLHTTPRequest, textStatus, error) {
+                console.log(XMLHTTPRequest+" "+error);
+            }
+        });
+        /*$( ".slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 500,
+			values: [ 75, 300 ],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+			}
+		});
+		$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+			" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+		*/
+		});
+</script>
+ 
+<!-- HTML -->
+<div style="float:left;margin-left:30px;">
+    <h1 id="title"></h1>
+    <p id="created_at"></p>
+    <div id="drag-x"></div>   
+    <div id="info"></div>
+</div>

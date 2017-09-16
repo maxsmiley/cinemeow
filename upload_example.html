@@ -1,0 +1,33 @@
+<html>
+<head>
+	<script src = "aws-sdk-1.10.0.min.js"></script>
+</head>
+<body>
+	<!-- Don't actually use this page anywhere this is just how to upload things -->
+	<input type="file" id="file-chooser" /> 
+	<button id="upload-button">Upload to S3</button>
+	<div id="results"></div>
+
+	<script type="text/javascript">
+	AWS.config.update({accessKeyId: 'AKIAIGUBB7DTOBPXCNHA', secretAccessKey: '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'});
+	var bucket = new AWS.S3({params: {Bucket: 'media.cinemeow'}});
+
+	var fileChooser = document.getElementById('file-chooser');
+	var button = document.getElementById('upload-button');
+	var results = document.getElementById('results');
+	button.addEventListener('click', function() {
+		var file = fileChooser.files[0];
+		if (file) {
+			results.innerHTML = '';
+
+			var params = {Key: file.name, ContentType: file.type, Body: file};
+			bucket.putObject(params, function (err, data) {
+				results.innerHTML = err ? 'ERROR! '+err : 'UPLOADED.';
+			});
+		} else {
+			results.innerHTML = 'Nothing to upload.';
+		}
+	}, false);
+	</script>
+</body>
+</html>

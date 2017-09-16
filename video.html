@@ -1,0 +1,133 @@
+<html>
+<head>
+	<title>cinemeow</title>
+		<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+	<script src="scripts/jquery-1.10.2.min.js"></script>
+	<script src='//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js'></script>
+</head>
+
+<body>
+	<div id="content">
+		<p><b>Project Eyebrow</b></p>
+		<video width="500" height="300" controls="controls"><source src="http://media.cinemeow.s3.amazonaws.com/eyebrows.mp4" type="video/mp4"></video>
+
+		<p>
+			<button type="button" onclick="requestPlay();">Play!</button>
+			<button type="button" onclick="addClip();">Add Clip!</button>
+		</p>
+
+		<p><b>Clip 1</b></p>
+
+		<form>
+			<div id="slider" style="width: 500px; margin-left: auto; margin-right: auto; margin-top: 0px;"></div>
+
+			<div>
+				<input type="text" id="start" data-index="0" value="10" class="sliderValue">
+				<input type="text" id="end" data-index="1" value="15" class="sliderValue">
+			</div>
+		</form>
+
+		<button type="button" onclick="cutClip('1');">Cut!</button>
+
+		<p><b>Clip 2</b></p>
+
+		<form>
+			<div id="slider2" style="width: 500px; margin-left: auto; margin-right: auto; margin-top: 0px;"></div>
+			<div>
+				<input type="text" id="start2" data-index="2" value="20" class="sliderValue">
+				<input type="text" id="end2" data-index="3" value="24" class="sliderValue">
+			</div>
+		</form>
+
+		<button type="button" onclick="cutClip('2');">Cut!</button>
+
+	<script>
+		//Request Play 
+		function requestPlay(){
+			var dirty = 0;
+			$("video").get(0).play();
+
+			$("video").on('timeupdate', function() {
+				if(this.currentTime != starttime && dirty == 0) {
+					this.currentTime = starttime;
+					dirty = 1;
+				}
+				if(this.currentTime > endtime && dirty == 1) {
+					this.currentTime = starttime2;
+					console.log("play 2nd clip");
+					this.play();
+					dirty = 2;
+				}
+				if(this.currentTime > endtime2 && dirty == 2) {
+					console.log("pause 2nd clip");
+					this.pause();
+				}
+			});
+		}
+
+		// intial loading
+		var starttime = 10;
+		var endtime = 15;
+		var starttime2 = 20;
+		var endtime2 = 24;
+
+		function init() {
+			$("video").on('loadedmetadata', requestPlay);
+		}
+
+		$(document).ready(function() {
+			init();
+
+			// initialize slider
+			$("#slider").slider({
+		        min: 0,
+		        max: 39, // this should be currentclip.totalTime
+		        step: 1,
+		        values: [10, 15],
+		        slide: function(event, ui) {
+		            for (var i = 0; i < ui.values.length; ++i) {
+		                $("input.sliderValue[data-index=" + i + "]").val(ui.values[i]);
+		            }
+		        }
+		    });
+
+			$("#slider2").slider({
+		        min: 0,
+		        max: 39, // this should be currentclip.totalTime
+		        step: 1,
+		        values: [20, 24],
+		        slide: function(event, ui) {
+		            $("input.sliderValue[data-index=2]").val(ui.values[0]);
+		            $("input.sliderValue[data-index=3]").val(ui.values[1]);
+		        }
+		    });
+
+		    $("input.sliderValue").change(function() {
+		        var $this = $(this);
+		        $("#slider").slider("values", $this.data("index"), $this.val());
+		    });
+		});
+
+		function cutClip(clip_id) {
+			$("video").get(0).pause();
+			console.log("cut");
+			console.log(clip_id);
+
+			if(clip_id == 1) {
+				starttime = $("#start").val();
+				endtime = $("#end").val();
+
+				console.log("start" + starttime);
+				console.log("end" + endtime);
+			}
+			if(clip_id == 2) {
+				starttime2 = $("#start2").val();
+				endtime2 = $("#end2").val();
+
+				console.log("start2" + starttime2);
+				console.log("end2" + endtime2);
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+body {
+	font-family: 'verdana';
+    /*background-image: url('../images/cat_director.png');*/
+}
+
+#content {
+	width: 100%;
+}
+
+#main {
+    text-align: center;
+}
+
+.drag {
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    line-height: 70px;
+    /*border: 1px solid black;*/
+    cursor: pointer;
+    border-radius: 10px;
+    float: left;
+    margin-left: 5px;
+    text-align: center;
+    font-size: 12px;
+    opacity: .7;
+    padding-top: 5px;
+}
+
+.drag_clone {
+    width: 30px;
+    max-width: 30px;
+    height: 75px;
+    border: 1px solid black;
+    cursor: pointer;
+    border-top-left-radius:  8px;
+     border-bottom-left-radius:  8px;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    background-color: #aabbff;
+    margin: none;
+}
+ 
+#drag-x {
+    width: 500px;
+    height: 75px;
+    border: 1px solid gray;
+    background-color: #E0F0FF;
+    padding-right: 4px;
+}
+
+.clip_container {
+    width: 90px;
+    max-width: 500px;
+    height: 75px;
+    max-height: 75px;
+    border: 1px solid gray;
+    background-color: #E0F0FF;
+    float: left;
+    margin-left: -4px;
+    padding-left:none;
+    font-size: 12px;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+#main_container {
+    position: relative;
+}
+
+#clipsviewer{
+    display: inline-block;
+}
+#videoplayer{
+    background-color: #E0F0FF;
+    width: 540px;
+}
+
+#player_container, #player_container{
+    display: inline-block;
+    background-color: #E0F0FF;
+    width: 540px;
+}
+.clip_source{
+}
+
+.blackout {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: #000000;
+    opacity: 0.5;
+    position: absolute;
+    margin: 0;
+}
+
+#newProjWindow {
+    width: 600px;
+    height: 230px;
+    position: absolute;
+    left: 50%;
+    margin-left:-320px;
+    top: 200px;
+    background-color: #FFFFFF;
+    z-index: 200;
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+}
+
